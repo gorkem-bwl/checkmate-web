@@ -1,0 +1,238 @@
+---
+title: "Project structure"
+description: "How the Checkmate codebase is organized."
+---
+
+## Overview
+
+Checkmate is a monorepo with a Node.js/Express backend and a React frontend. The backend handles monitoring logic, API endpoints, and notifications, while the frontend provides the user interface.
+
+```
+checkmate/
+├── server/          # Backend — Node.js, Express, TypeScript
+├── client/          # Frontend — React, Vite, MUI, TypeScript
+├── docker/          # Docker configs (dev, prod, ARM, mono)
+├── charts/          # Kubernetes Helm charts
+├── docs/            # Documentation source files
+├── scripts/         # Development and utility scripts
+└── .github/         # CI/CD workflows and issue templates
+```
+
+---
+
+## Server structure
+
+The backend follows a **three-tier architecture**: controllers → services → repositories.
+
+```
+server/src/
+├── index.ts                  # Entry point — env validation, DB init, server start
+├── app.ts                    # Express app factory — middleware, routes, Swagger
+├── shutdown.ts               # Graceful shutdown handler
+│
+├── config/
+│   ├── services.ts           # Dependency injection — instantiates all services
+│   ├── controllers.ts        # Controller instantiation with injected services
+│   └── routes.ts             # Route registration
+│
+├── controllers/              # HTTP request/response handling (16 controllers)
+│   ├── authController.ts
+│   ├── monitorController.ts
+│   ├── checkController.ts
+│   ├── notificationController.ts
+│   ├── statusPageController.ts
+│   ├── incidentController.ts
+│   ├── maintenanceWindowController.ts
+│   ├── settingsController.ts
+│   ├── queueController.ts
+│   ├── diagnosticController.ts
+│   └── ...
+│
+├── service/
+│   ├── business/             # Domain logic
+│   │   ├── monitorService.ts
+│   │   ├── checkService.ts
+│   │   ├── userService.ts
+│   │   ├── statusPageService.ts
+│   │   ├── incidentService.ts
+│   │   └── ...
+│   ├── infrastructure/       # Technical services
+│   │   ├── networkService.ts           # Routes checks to providers
+│   │   ├── notificationsService.ts     # Notification dispatch
+│   │   ├── statusService.ts            # Check processing and status updates
+│   │   ├── bufferService.ts            # Batches check results
+│   │   ├── emailService.ts             # SMTP / MailerSend
+│   │   ├── network/                    # 12 monitor providers
+│   │   │   ├── HttpProvider.ts
+│   │   │   ├── PingProvider.ts
+│   │   │   ├── PageSpeedProvider.ts
+│   │   │   ├── HardwareProvider.ts
+│   │   │   ├── DockerProvider.ts
+│   │   │   ├── PortProvider.ts
+│   │   │   ├── GameProvider.ts
+│   │   │   ├── GrpcProvider.ts
+│   │   │   ├── WebSocketProvider.ts
+│   │   │   └── ...
+│   │   ├── notificationProviders/      # 8 notification channels
+│   │   │   ├── email.ts
+│   │   │   ├── slack.ts
+│   │   │   ├── discord.ts
+│   │   │   ├── teams.ts
+│   │   │   ├── pagerduty.ts
+│   │   │   ├── matrix.ts
+│   │   │   └── webhook.ts
+│   │   └── SuperSimpleQueue/           # Job scheduling engine
+│   └── system/
+│       └── settingsService.ts
+│
+├── db/
+│   ├── MongoDB.ts            # Mongoose connection and migrations
+│   ├── models/               # 15 MongoDB schemas
+│   └── migration/            # Schema migration scripts
+│
+├── repositories/             # Data access layer (16 repos)
+│   ├── monitors/
+│   ├── checks/
+│   ├── users/
+│   ├── notifications/
+│   └── ...                   # Each has interface + Mongo implementation
+│
+├── routes/                   # Express route definitions (13 files)
+├── middleware/               # JWT auth, rate limiting, sanitization, RBAC
+├── validation/               # Zod schemas for input validation
+├── types/                    # TypeScript type definitions
+├── utils/                    # Logger, error classes, helpers
+└── templates/                # Email templates (MJML + Handlebars)
+```
+
+### Key patterns
+
+- **Dependency injection** — services are instantiated in `config/services.ts` and injected into controllers
+- **Repository pattern** — each data entity has an interface and a MongoDB implementation, making the database layer swappable
+- **Provider pattern** — monitor types and notification channels are pluggable via provider interfaces (`IStatusProvider`, `INotificationProvider`)
+
+---
+
+## Client structure
+
+The frontend is a React SPA using Vite, Redux Toolkit, and Material-UI.
+
+```
+client/src/
+├── main.tsx                  # Vite entry point
+├── App.tsx                   # Root — theme provider + Redux store
+├── store.ts                  # Redux store with persistence
+│
+├── Routes/
+│   └── index.tsx             # React Router v6 route definitions
+│
+├── Pages/                    # Page-level components
+│   ├── Auth/                 # Login, register, password recovery
+│   ├── Uptime/               # HTTP/ping/port monitor views
+│   ├── PageSpeed/            # PageSpeed results
+│   ├── Infrastructure/       # Hardware metrics (CPU, RAM, disk)
+│   ├── Incidents/            # Downtime incident timeline
+│   ├── StatusPage/           # Public status page builder
+│   ├── Notifications/        # Notification channel config
+│   ├── Maintenance/          # Maintenance windows
+│   ├── Account/              # Profile, team management
+│   ├── Settings/             # Global app settings
+│   ├── Logs/                 # Server logs (admin only)
+│   └── CreateMonitor/        # Monitor creation wizard
+│
+├── Components/
+│   ├── layout/               # AppLayout, Sidebar
+│   ├── design-elements/      # UI primitives (StatusBox, Table, Gauge, charts)
+│   ├── inputs/               # Form inputs (20+ components)
+│   ├── monitors/             # Monitor-specific components
+│   └── routing/              # ProtectedRoute, RoleProtectedRoute
+│
+├── Hooks/                    # Custom hooks (19+)
+│   ├── UseApi.ts             # SWR-based data fetching
+│   ├── useMonitorForm.ts     # Monitor form validation
+│   └── ...
+│
+├── Features/                 # Redux slices
+│   ├── Auth/authSlice.ts     # User, token, role state
+│   └── UI/uiSlice.ts         # Theme, sidebar state
+│
+├── Utils/
+│   ├── ApiClient.ts          # Axios wrapper with auth headers
+│   ├── Theme/                # MUI light + dark themes
+│   └── i18n.ts               # Internationalization setup
+│
+├── Validation/               # Joi validation schemas
+└── locales/                  # 18 language translation files
+```
+
+### Key patterns
+
+- **State management** — Redux Toolkit with `redux-persist` for auth and UI state
+- **Data fetching** — SWR via a custom `UseApi` hook for caching and revalidation
+- **Form handling** — `react-hook-form` with Joi/Zod validation resolvers
+- **Theming** — MUI theme with light/dark modes, Emotion CSS-in-JS
+- **i18n** — 18 languages via `i18next`
+
+---
+
+## Docker configurations
+
+```
+docker/
+├── dev/              # Development — hot reload, local MongoDB
+├── staging/          # Staging environment
+├── prod/             # Production — Nginx reverse proxy
+├── dist/             # Pre-built images (x86_64) — separate FE/BE
+├── dist-arm/         # ARM builds (Raspberry Pi, Apple Silicon)
+├── dist-mono/        # Combined FE/BE in single container
+└── coolify/          # Coolify deployment config
+```
+
+---
+
+## Database
+
+Checkmate uses **MongoDB** as the primary database and **Redis** for job queue support.
+
+### Core collections
+
+| Collection | Purpose |
+|-----------|---------|
+| `monitors` | Monitor configuration (URL, type, interval, thresholds) |
+| `checks` | Individual check results (time-series optimized) |
+| `geochecks` | Geographic check results from multiple locations |
+| `monitorstats` | Pre-aggregated statistics for reporting |
+| `users` | User accounts with roles and hashed passwords |
+| `teams` | Multi-tenant workspace grouping |
+| `notifications` | Notification channel configurations |
+| `incidents` | Downtime records with timelines |
+| `maintenancewindows` | Scheduled maintenance periods |
+| `statuspages` | Public status page configurations |
+| `appsettings` | Global runtime settings |
+| `invites` | Team member invitations |
+| `migrations` | Schema migration tracking |
+
+---
+
+## API routes
+
+All routes are under `/api/v1/`:
+
+| Route | Purpose |
+|-------|---------|
+| `/auth` | Authentication (login, register, recovery) |
+| `/monitors` | Monitor CRUD, details, pause/resume |
+| `/checks` | Check history and filtering |
+| `/geo-checks` | Geographic check results |
+| `/notifications` | Notification channel management |
+| `/status-page` | Public status page CRUD |
+| `/incidents` | Incident tracking |
+| `/maintenance-window` | Maintenance scheduling |
+| `/settings` | Global app settings |
+| `/queue` | Job queue metrics |
+| `/logs` | Server logs (admin only) |
+| `/diagnostic` | System diagnostics (admin only) |
+| `/invite` | Team invitations |
+| `/health` | Health check endpoint |
+
+OpenAPI documentation is available at `/api-docs` when running in development.

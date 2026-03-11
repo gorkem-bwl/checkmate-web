@@ -1,0 +1,294 @@
+---
+title: "Architecture overview"
+description: "How Checkmate's monitoring engine, services, and integrations work together."
+---
+
+## System architecture
+
+Checkmate consists of four main components that work together:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        React frontend                           │
+│         (Vite, MUI, Redux Toolkit, React Router)                │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │ REST API
+┌──────────────────────────▼──────────────────────────────────────┐
+│                      Express backend                            │
+│                                                                 │
+│  ┌──────────┐  ┌──────────────┐  ┌────────────────────────┐    │
+│  │ Auth &   │  │  Monitoring  │  │    Notifications       │    │
+│  │ Users    │  │  Engine      │  │    (8 channels)        │    │
+│  └──────────┘  └──────┬───────┘  └────────────────────────┘    │
+│                       │                                         │
+│  ┌──────────┐  ┌──────▼───────┐  ┌────────────────────────┐    │
+│  │ Status   │  │  Job Queue   │  │    Incident &          │    │
+│  │ Pages    │  │  (Scheduler) │  │    Maintenance         │    │
+│  └──────────┘  └──────────────┘  └────────────────────────┘    │
+└──────────┬──────────────────────────────────────────────────────┘
+           │
+    ┌──────▼──────┐  ┌───────────┐
+    │  MongoDB    │  │   Redis   │
+    │  (primary)  │  │  (queue)  │
+    └─────────────┘  └───────────┘
+```
+
+**External connections:**
+
+```
+Monitored endpoints  ◄──── HTTP, Ping, Port, gRPC, WebSocket checks
+Capture agents       ◄──── Hardware metrics (CPU, RAM, disk, network)
+Docker daemon        ◄──── Container health via docker.sock
+Google PageSpeed API ◄──── Performance scores
+GameDig servers      ◄──── Game server status
+```
+
+---
+
+## Monitoring engine
+
+The monitoring engine is the core of Checkmate. It schedules checks, executes them via specialized providers, and processes the results.
+
+### Check execution flow
+
+```
+┌──────────────┐     ┌────────────────┐     ┌──────────────────┐
+│  Job Queue   │────▶│ NetworkService  │────▶│  Status Provider │
+│  (scheduler) │     │  (router)       │     │  (Http, Ping...) │
+└──────────────┘     └────────────────┘     └────────┬─────────┘
+                                                      │
+                                                      ▼
+┌──────────────┐     ┌────────────────┐     ┌──────────────────┐
+│ Notification │◄────│ StatusService   │◄────│  Check result    │
+│   Service    │     │  (processor)    │     │  (up/down/error) │
+└──────────────┘     └────────────────┘     └──────────────────┘
+```
+
+1. **SuperSimpleQueue** triggers jobs based on each monitor's interval
+2. **NetworkService** routes the check to the correct provider based on monitor type
+3. The **provider** executes the actual check (HTTP request, ICMP ping, etc.) and returns a status response
+4. **StatusService** processes the result:
+   - Stores the check in MongoDB
+   - Updates the monitor's rolling status window
+   - Calculates uptime percentage
+   - Detects status changes (up → down or down → up)
+5. On status change, **NotificationsService** sends alerts through configured channels
+
+### Monitor types and providers
+
+| Monitor type | Provider | What it checks |
+|-------------|----------|----------------|
+| `http` | HttpProvider | HTTP/HTTPS endpoints with response validation |
+| `ping` | PingProvider | ICMP ping for network reachability |
+| `port` | PortProvider | TCP port availability |
+| `pagespeed` | PageSpeedProvider | Google PageSpeed scores and Web Vitals |
+| `hardware` | HardwareProvider | CPU, RAM, disk via Capture agent |
+| `docker` | DockerProvider | Container health via Docker API |
+| `game` | GameProvider | Game server status via GameDig |
+| `grpc` | GrpcProvider | gRPC service health checks |
+| `websocket` | WebSocketProvider | WebSocket connection testing |
+
+### Status determination
+
+Checkmate uses a **sliding window** approach to determine monitor status:
+
+```
+statusWindow: [true, true, false, true, true]  ← last 5 checks
+                                    ▲
+                                    │
+                              one failure
+
+uptime = 4/5 = 80%
+
+If uptime < statusWindowThreshold (default 60%) → status = "down"
+```
+
+- `statusWindow` — rolling array of boolean results (true = success)
+- `statusWindowSize` — how many recent checks to consider (default: 5)
+- `statusWindowThreshold` — percentage below which the monitor is "down" (default: 60%)
+
+This prevents flapping from a single failed check.
+
+**Possible statuses:**
+- `up` — checks passing above threshold
+- `down` — checks failing below threshold
+- `paused` — monitoring disabled by user
+- `maintenance` — during a scheduled maintenance window
+- `exceeded` — infrastructure metric above threshold (CPU, memory, etc.)
+- `initializing` — first check hasn't completed yet
+
+---
+
+## Service architecture
+
+The backend uses a **three-tier architecture** with dependency injection.
+
+```
+┌─────────────────────────────────────────────────┐
+│                 Controllers                      │
+│         (HTTP handling, input validation)         │
+└────────────────────┬────────────────────────────┘
+                     │
+┌────────────────────▼────────────────────────────┐
+│                  Services                        │
+│                                                  │
+│   ┌─────────────┐  ┌──────────────────────┐     │
+│   │  Business    │  │  Infrastructure       │     │
+│   │  services    │  │  services             │     │
+│   │              │  │                        │     │
+│   │  • Monitor   │  │  • Network (routing)   │     │
+│   │  • Check     │  │  • Status (processing) │     │
+│   │  • User      │  │  • Notification        │     │
+│   │  • Incident  │  │  • Email               │     │
+│   │  • StatusPage│  │  • Buffer              │     │
+│   └─────────────┘  └──────────────────────┘     │
+└────────────────────┬────────────────────────────┘
+                     │
+┌────────────────────▼────────────────────────────┐
+│               Repositories                       │
+│      (data access — interface + MongoDB impl)    │
+└─────────────────────────────────────────────────┘
+```
+
+**How dependency injection works:**
+
+1. `config/services.ts` — instantiates all repositories, providers, and services
+2. `config/controllers.ts` — creates controllers with injected services
+3. `config/routes.ts` — registers routes with controllers
+
+This makes services testable and allows swapping implementations (e.g., replacing MongoDB with another database).
+
+---
+
+## Notification system
+
+When a monitor's status changes, the notification pipeline activates:
+
+```
+Status change detected
+        │
+        ▼
+┌─────────────────────────┐
+│ NotificationMessageBuilder │  ← Builds message with monitor details
+└───────────┬─────────────┘
+            │
+            ▼
+┌─────────────────────────┐
+│  NotificationsService    │  ← Routes to enabled channels
+└───────────┬─────────────┘
+            │
+     ┌──────┼──────┬──────┬──────┬──────┬──────┬──────┐
+     ▼      ▼      ▼      ▼      ▼      ▼      ▼      ▼
+   Email  Slack  Discord Teams  PagerDuty Matrix Webhook
+```
+
+Each notification channel implements `INotificationProvider` with a standard `sendNotification()` method.
+
+Email notifications use **MJML templates** compiled with **Handlebars** for dynamic content, supporting both SMTP (Nodemailer) and MailerSend as transport providers.
+
+---
+
+## Infrastructure monitoring
+
+Infrastructure monitoring requires the **Capture agent** running on monitored servers.
+
+```
+┌──────────────────────┐          ┌──────────────────────┐
+│   Monitored server   │          │   Checkmate server   │
+│                      │   HTTP   │                      │
+│  ┌────────────────┐  │◄─────── │  ┌────────────────┐  │
+│  │ Capture agent  │  │─────────▶│  │ HardwareProvider│  │
+│  │ (Go binary)    │  │  JSON   │  └────────────────┘  │
+│  └────────────────┘  │         │                      │
+│                      │         │  Stores metrics in   │
+│  Reads: CPU, RAM,    │         │  Check documents     │
+│  disk, network,      │         │                      │
+│  Docker, S.M.A.R.T.  │         │  Alerts if threshold │
+│                      │         │  exceeded             │
+└──────────────────────┘         └──────────────────────┘
+```
+
+Capture exposes a REST API on port 59232. Checkmate's `HardwareProvider` polls it at the configured interval, stores the metrics, and triggers alerts when thresholds are exceeded.
+
+---
+
+## Data flow
+
+### Check data lifecycle
+
+```
+Check executed → Stored in MongoDB (time-series) → Aggregated in MonitorStats
+                                                          │
+                                                          ▼
+                                                   Displayed in UI
+                                                   (charts, tables)
+                                                          │
+                                                          ▼
+                                                   TTL index cleanup
+                                                   (configurable retention)
+```
+
+- **Checks** are stored as time-series documents optimized for range queries
+- **MonitorStats** hold pre-aggregated data (uptime %, avg response time) to avoid expensive aggregations
+- **BufferService** batches writes for performance
+- **TTL indexes** automatically remove old check data based on the configured retention period
+
+### Authentication flow
+
+```
+Login request → bcrypt password verify → JWT token issued
+                                              │
+                                              ▼
+                                        Token sent with
+                                        each API request
+                                              │
+                                              ▼
+                                        verifyJWT middleware
+                                        → isAllowed (RBAC)
+                                        → Controller
+```
+
+Three roles control access:
+- **superadmin** — full system access, user management
+- **admin** — monitor CRUD, notification config, team management
+- **user** — read-only access to monitors and dashboards
+
+---
+
+## Technology stack summary
+
+### Backend
+| Technology | Purpose |
+|-----------|---------|
+| Node.js 20+ | Runtime |
+| Express | Web framework |
+| TypeScript | Type safety |
+| MongoDB (Mongoose) | Primary database |
+| Redis (ioredis) | Job queue support |
+| Zod | Input validation |
+| JWT (jsonwebtoken) | Authentication |
+| Winston | Logging |
+| MJML + Handlebars | Email templates |
+
+### Frontend
+| Technology | Purpose |
+|-----------|---------|
+| React 18 | UI library |
+| Vite | Build tool and dev server |
+| TypeScript | Type safety |
+| Redux Toolkit | State management |
+| Material-UI 7 | Component library |
+| SWR | Data fetching and caching |
+| React Router v6 | Client-side routing |
+| react-hook-form | Form handling |
+| i18next | Internationalization (18 languages) |
+| Recharts | Charts and visualizations |
+| MapLibre GL | Geographic map visualization |
+
+### Infrastructure
+| Technology | Purpose |
+|-----------|---------|
+| Docker | Containerization |
+| Helm | Kubernetes deployment |
+| Nginx | Reverse proxy (production) |
+| Capture (Go) | Hardware monitoring agent |

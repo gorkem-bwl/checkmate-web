@@ -7,6 +7,9 @@
     "quick-start",
     "dashboard",
     "roles-permissions",
-    "troubleshooting"
+    "troubleshooting",
+    "architecture",
+    "project-structure",
+    "contributing"
   ]
 }
