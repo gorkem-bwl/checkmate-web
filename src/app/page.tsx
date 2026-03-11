@@ -6,8 +6,8 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Contributors } from "@/components/Contributors";
 
-const GlobeLight = dynamic(
-  () => import("@/components/GlobeLight").then((mod) => mod.GlobeLight),
+const GlobeVariantD = dynamic(
+  () => import("@/components/GlobeVariantD").then((mod) => mod.GlobeVariantD),
   { ssr: false }
 );
 import {
@@ -243,7 +243,7 @@ export default function Home() {
                 {/* Background globe — 3x size, only upper part visible */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden">
                   <div className="absolute -bottom-[600px] right-[-200px] w-[900px] h-[900px]">
-                    <GlobeLight />
+                    <GlobeVariantD />
                   </div>
                 </div>
                 {/* Content */}
