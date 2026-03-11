@@ -1,0 +1,10 @@
+{
+  "title": "PageSpeed monitoring",
+  "pages": [
+    "creating-pagespeed",
+    "understanding-scores",
+    "core-web-vitals",
+    "pagespeed-api",
+    "performance-trends"
+  ]
+}

@@ -1,0 +1,36 @@
+---
+title: "Understanding incidents"
+description: "How incidents are detected and created."
+---
+
+## Overview
+
+An incident is created when a monitor detects a failure. Checkmate tracks incident start time, duration, and resolution to help you analyze downtime patterns.
+
+## When incidents are created
+
+Incidents are created when:
+
+- An HTTP monitor receives an unexpected status code
+- A ping or port monitor fails to connect
+- A monitor times out without response
+- Infrastructure thresholds are exceeded
+
+## Incident states
+
+- **Active**: The monitor is currently down
+- **Resolved**: The monitor has recovered
+
+## Related articles
+
+<Cards>
+
+<Card href="/docs/incidents/incident-timeline" title="Incident timeline">
+Track incident progression
+</Card>
+
+<Card href="/docs/incidents/resolving-incidents" title="Resolving incidents">
+Manual vs automatic resolution
+</Card>
+
+</Cards>

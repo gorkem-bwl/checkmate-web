@@ -1,0 +1,21 @@
+---
+title: "PagerDuty integration"
+description: "On-call management integration."
+---
+
+## Overview
+
+PagerDuty integration connects Checkmate to your on-call schedules. Incidents trigger PagerDuty alerts with proper escalation policies.
+
+## Setting up PagerDuty
+
+1. In PagerDuty, go to **Services** and create or select a service
+2. Add a new integration of type **Events API v2**
+3. Copy the Integration Key (routing key)
+4. In Checkmate, navigate to **Integrations**
+5. Create a new **PagerDuty** integration
+6. Paste the integration key and save
+
+<Callout type="info">
+PagerDuty incidents are automatically resolved when Checkmate detects recovery.
+</Callout>

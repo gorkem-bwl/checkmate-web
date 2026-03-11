@@ -1,0 +1,14 @@
+{
+  "title": "Uptime monitoring",
+  "pages": [
+    "http-monitors",
+    "ping-monitors",
+    "port-monitors",
+    "docker-monitors",
+    "bulk-import",
+    "intervals-timing",
+    "json-path-matching",
+    "ssl-tls-monitoring",
+    "uptime-metrics"
+  ]
+}

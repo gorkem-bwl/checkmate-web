@@ -1,0 +1,50 @@
+---
+title: "Creating HTTP monitors"
+description: "URL monitoring with response validation."
+---
+
+## Overview
+
+HTTP monitors check website and API availability by making HTTP GET requests and validating responses. They verify that the server returns a successful response (status 200-299).
+
+## Creating an HTTP monitor
+
+1. Navigate to **Uptime** in the sidebar
+2. Click **Create monitor**
+3. Select **HTTP/HTTPS** as the monitor type
+4. Enter the target URL (include `https://` or `http://`)
+5. Configure the settings below
+6. Click **Create monitor**
+
+## Configuration options
+
+- **Name**: A descriptive name for the monitor (max 50 characters)
+- **URL**: The full URL to monitor (must include protocol)
+- **Check interval**: How often to check (15 seconds to 30 minutes)
+- **Ignore TLS errors**: Skip SSL certificate validation if needed
+
+### Response validation
+
+You can validate API response content using these options:
+
+- **Match method**: How to compare: equal, include, or regex
+- **Expected value**: The value to match against
+- **JSON path**: JMESPath expression to extract data from JSON responses
+
+<Callout type="info">
+HTTP monitors check for successful responses (status 200-299). The monitor uses GET requests by default.
+</Callout>
+
+## Related articles
+
+<Cards>
+
+<Card href="/docs/uptime-monitoring/json-path-matching" title="JSON path matching">
+Validate API response content
+</Card>
+
+<Card href="/docs/uptime-monitoring/ssl-tls-monitoring" title="SSL/TLS monitoring">
+Track certificate expiration
+</Card>
+
+</Cards>

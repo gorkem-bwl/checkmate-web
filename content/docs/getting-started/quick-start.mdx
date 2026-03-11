@@ -1,0 +1,53 @@
+---
+title: "Quick start guide"
+description: "Create your first monitor in 5 minutes."
+---
+
+## Overview
+
+This guide walks you through creating your first monitor and setting up notifications. You'll have a working monitoring setup in about 5 minutes.
+
+## Creating your first monitor
+
+1. Navigate to **Uptime** in the sidebar
+2. Click **Create monitor** in the top right
+3. Select **HTTP/HTTPS** as the monitor type
+4. Enter the URL you want to monitor (e.g., `https://example.com`)
+5. Set the check interval (1-5 minutes recommended for critical services)
+6. Click **Create monitor** to start monitoring
+
+<Callout type="info">
+Use descriptive names like "Production API" or "Marketing Website" to easily identify monitors in alerts.
+</Callout>
+
+## Verifying your monitor
+
+After creating a monitor, Checkmate immediately performs the first check. You can verify it's working by:
+
+1. Click on your new monitor to open the details page
+2. Check the status indicator shows **Up** (green)
+3. View the response time in the metrics panel
+
+## Setting up notifications
+
+To receive alerts when your monitor goes down:
+
+1. Navigate to **Notifications** in the sidebar
+2. Click **Create notification**
+3. Select your preferred channel (email, Slack, Discord, etc.)
+4. Configure the notification settings
+5. Click **Test** to verify the notification works
+
+## Next steps
+
+<Cards>
+
+<Card href="/docs/uptime-monitoring/http-monitors" title="Creating HTTP monitors">
+Advanced configuration options
+</Card>
+
+<Card href="/docs/notifications/email-notifications" title="Email notifications">
+Configure SMTP for email alerts
+</Card>
+
+</Cards>

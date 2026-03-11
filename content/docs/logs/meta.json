@@ -1,0 +1,8 @@
+{
+  "title": "Logs & diagnostics",
+  "pages": [
+    "application-logs",
+    "queue-monitoring",
+    "system-diagnostics"
+  ]
+}

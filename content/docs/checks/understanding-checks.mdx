@@ -1,0 +1,29 @@
+---
+title: "Understanding checks"
+description: "What checks are and how they work."
+---
+
+## Overview
+
+Checks are individual monitoring test results that record the status and performance of your monitors. Each time Checkmate tests a monitor, it creates a check record with detailed information about the result.
+
+## What checks record
+
+Each check captures:
+
+- **Status**: Whether the check passed (up) or failed (down)
+- **Timestamp**: When the check was performed
+- **HTTP status code**: The response code for HTTP monitors
+- **Response time**: How long the check took in milliseconds
+- **Message**: Success confirmation or error details
+
+## Viewing checks
+
+You can view checks in two places:
+
+- **Checks page**: Navigate to Checks in the sidebar to see recent checks across all monitors
+- **Monitor details**: Click any monitor to see its specific check history in the Response Times table
+
+## Check frequency
+
+The frequency of checks depends on the monitor's configured interval. Shorter intervals mean more checks and faster incident detection, but also more resource usage.

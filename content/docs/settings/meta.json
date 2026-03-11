@@ -1,0 +1,11 @@
+{
+  "title": "Settings & configuration",
+  "pages": [
+    "account-settings",
+    "email-configuration",
+    "global-thresholds",
+    "appearance",
+    "timezone-settings",
+    "export-monitors"
+  ]
+}

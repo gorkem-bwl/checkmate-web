@@ -1,0 +1,34 @@
+---
+title: "SSL/TLS monitoring"
+description: "Certificate tracking and error handling."
+---
+
+## Overview
+
+Checkmate automatically monitors SSL/TLS certificates for HTTPS monitors. You can track certificate expiration and receive alerts before certificates expire.
+
+## Certificate tracking
+
+For every HTTPS monitor, Checkmate tracks:
+
+- **Issuer**: The certificate authority that issued the certificate
+- **Valid from**: When the certificate became valid
+- **Expiration date**: When the certificate expires
+- **Days until expiry**: Countdown to expiration
+
+## Expiration alerts
+
+Checkmate sends notifications when certificates are approaching expiration. You can configure the warning threshold in monitor settings.
+
+<Callout type="info">
+Set up certificate expiration alerts at least 14 days before expiry to give yourself time to renew.
+</Callout>
+
+## Certificate errors
+
+Checkmate detects common SSL/TLS issues:
+
+- Expired certificates
+- Self-signed certificates (unless explicitly allowed)
+- Certificate hostname mismatch
+- Incomplete certificate chains

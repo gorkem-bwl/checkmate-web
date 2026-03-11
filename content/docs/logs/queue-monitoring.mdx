@@ -1,0 +1,42 @@
+---
+title: "Queue monitoring"
+description: "Monitor background jobs and queue status."
+---
+
+## Overview
+
+The Queue tab monitors the background job system that runs your monitoring checks. View job status, track failures, and manage the queue.
+
+## Accessing the queue
+
+1. Navigate to **Logs** in the sidebar
+2. Click the **Queue** tab
+
+## Queue metrics
+
+The metrics section displays overall queue statistics including active jobs, completed jobs, and failed jobs.
+
+## Job table
+
+The job table shows all monitoring jobs with:
+
+- **Monitor ID and URL**: Which monitor the job belongs to
+- **Interval**: How often the job runs (in milliseconds)
+- **Monitor type**: HTTP, ping, port, etc.
+- **Run count**: Total number of executions
+- **Fail count**: Number of failed runs
+- **Last run**: Timestamp of the most recent execution
+- **Status**: Active, locked, or failed indicator
+
+<Callout type="info" title="Quick navigation">
+
+</Callout>
+
+## Failed jobs
+
+A separate table highlights jobs that have failed, showing the fail count, timestamp, and failure reason. Investigate these to ensure all monitors are running correctly.
+
+## Queue actions
+
+- **Refresh**: Reload queue data to see the latest status
+- **Flush**: Clear the queue and reset all jobs (use with caution)

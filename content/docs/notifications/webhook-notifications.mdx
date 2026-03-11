@@ -1,0 +1,36 @@
+---
+title: "Webhook notifications"
+description: "Custom HTTP callbacks for alerts."
+---
+
+## Overview
+
+Webhook notifications send HTTP POST requests to your custom endpoint when incidents occur. Use them to integrate with any service.
+
+## Setting up webhooks
+
+1. Navigate to **Integrations** in the sidebar
+2. Click **Create integration**
+3. Select **Webhook**
+4. Enter your endpoint URL
+5. Click **Test** then **Save**
+
+## Webhook payload
+
+Checkmate sends a JSON payload with incident details:
+
+```json
+{
+  "type": "incident.created",
+  "monitor": {
+    "id": "abc123",
+    "name": "Production API",
+    "url": "https://api.example.com"
+  },
+  "incident": {
+    "id": "inc_456",
+    "status": "active",
+    "startedAt": "2024-01-15T10:30:00Z"
+  }
+}
+```

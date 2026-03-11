@@ -1,0 +1,9 @@
+{
+  "title": "Incidents & alerts",
+  "pages": [
+    "understanding-incidents",
+    "incident-timeline",
+    "resolving-incidents",
+    "incident-history"
+  ]
+}

@@ -1,0 +1,40 @@
+---
+title: "Port monitors"
+description: "TCP port availability monitoring."
+---
+
+## Overview
+
+Port monitors check TCP port availability on servers. Use them to monitor databases, mail servers, game servers, and other services that listen on specific ports.
+
+## Creating a port monitor
+
+1. Navigate to **Uptime** in the sidebar
+2. Click **Create monitor**
+3. Select **TCP port** as the monitor type
+4. Enter the hostname or IP address
+5. Enter the port number
+6. Set the check interval
+7. Click **Create monitor**
+
+## Common ports
+
+| Port | Service |
+| --- | --- |
+| 22 | SSH |
+| 25 | SMTP (email) |
+| 443 | HTTPS |
+| 3306 | MySQL |
+| 5432 | PostgreSQL |
+| 6379 | Redis |
+| 27017 | MongoDB |
+
+## Related articles
+
+<Cards>
+
+<Card href="/docs/uptime-monitoring/http-monitors" title="HTTP monitors">
+For web services and APIs
+</Card>
+
+</Cards>

@@ -1,0 +1,45 @@
+---
+title: "Understanding uptime metrics"
+description: "Response time, status codes, and uptime percentage."
+---
+
+## Overview
+
+Checkmate tracks several metrics for each monitor to help you understand availability and performance. This article explains what each metric means.
+
+## Uptime percentage
+
+Uptime percentage shows how often your service was available over a time period. It's calculated as:
+
+```text
+Uptime % = (Successful checks / Total checks) × 100
+```
+
+| Uptime | Monthly downtime |
+| --- | --- |
+| 99.9% | ~43 minutes |
+| 99.5% | ~3.6 hours |
+| 99.0% | ~7.2 hours |
+| 95.0% | ~36 hours |
+
+## Response time
+
+Response time measures how long it takes to receive a response from your service. Checkmate shows:
+
+- **Current**: The most recent response time
+- **Average**: Mean response time over the period
+- **P95**: 95th percentile (95% of requests were faster)
+
+## Status codes
+
+For HTTP monitors, Checkmate tracks response status codes. A check is considered successful if the status code matches your expected codes (default: 200).
+
+## Related articles
+
+<Cards>
+
+<Card href="/docs/incidents/understanding-incidents" title="Understanding incidents">
+How downtime creates incidents
+</Card>
+
+</Cards>

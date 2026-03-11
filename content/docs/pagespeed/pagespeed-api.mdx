@@ -1,0 +1,31 @@
+---
+title: "PageSpeed API configuration"
+description: "Setting up your Google PageSpeed API key."
+---
+
+## Overview
+
+Checkmate uses the Google PageSpeed Insights API to run Lighthouse audits. While the API works without a key, adding one increases your rate limits.
+
+## Getting an API key
+
+1. Go to the Google Cloud Console
+2. Create a new project or select an existing one
+3. Enable the PageSpeed Insights API
+4. Create credentials (API key)
+5. Copy the generated API key
+
+## Configuring the API key
+
+1. Navigate to **Settings** in the sidebar
+2. Scroll to the **PageSpeed** section
+3. Enter your API key in the **PageSpeed API key** field
+4. Click **Save** at the bottom of the page
+
+<Callout type="warn">
+Only Admins and Superadmins can configure the PageSpeed API key.
+</Callout>
+
+<Callout type="info">
+Without an API key, you're limited to a few requests per minute. With a key, you can make thousands of requests per day.
+</Callout>

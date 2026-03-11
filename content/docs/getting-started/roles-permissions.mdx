@@ -1,0 +1,56 @@
+---
+title: "User roles and permissions"
+description: "User, Admin, and Superadmin roles explained."
+---
+
+## Overview
+
+Checkmate uses a role-based access control system with three user roles: User, Admin, and Superadmin. Each role has different permissions for managing monitors, team members, and settings.
+
+## User role
+
+Users have standard access to monitoring features:
+
+- View all monitors and their status
+- View incidents and history
+- Access status pages
+
+## Admin role
+
+Admins have all User permissions plus management capabilities:
+
+- Create, edit, and delete monitors
+- Invite new team members
+- Remove team members
+- Change user roles (except Superadmin)
+- Configure notification channels
+- Manage status pages and maintenance windows
+- Access system diagnostics and logs
+
+## Superadmin role
+
+Superadmins have full system access:
+
+- All Admin permissions
+- Configure global application settings
+- Set up SMTP email configuration
+- Manage user accounts and passwords
+- Access all administrative functions
+
+<Callout type="info">
+The first user to register becomes the Superadmin. Only existing Superadmins can promote other users to Superadmin.
+</Callout>
+
+## Related articles
+
+<Cards>
+
+<Card href="/docs/team-management/inviting-members" title="Inviting team members">
+Add people to your team
+</Card>
+
+<Card href="/docs/team-management/user-roles" title="User roles">
+Detailed role comparison
+</Card>
+
+</Cards>

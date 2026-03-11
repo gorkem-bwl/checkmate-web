@@ -1,0 +1,12 @@
+{
+  "title": "Notifications",
+  "pages": [
+    "email-notifications",
+    "slack-integration",
+    "discord-integration",
+    "pagerduty-integration",
+    "webhook-notifications",
+    "matrix-integration",
+    "testing-notifications"
+  ]
+}

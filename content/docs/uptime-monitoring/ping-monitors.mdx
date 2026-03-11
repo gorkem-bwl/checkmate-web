@@ -1,0 +1,37 @@
+---
+title: "Ping monitors"
+description: "ICMP-based availability checks."
+---
+
+## Overview
+
+Ping monitors verify server availability using ICMP echo requests. They're useful for monitoring servers, network devices, and infrastructure that doesn't expose HTTP endpoints.
+
+## Creating a ping monitor
+
+1. Navigate to **Uptime** in the sidebar
+2. Click **Create monitor**
+3. Select **Ping** as the monitor type
+4. Enter the hostname or IP address
+5. Set the check interval
+6. Click **Create monitor**
+
+## Configuration options
+
+- **Host**: IP address or hostname to ping
+- **Check interval**: How often to send ping requests
+- **Timeout**: Maximum time to wait for a response
+
+<Callout type="info">
+Some cloud providers and firewalls block ICMP traffic. If ping monitors fail but the server is accessible, consider using HTTP or TCP port monitors instead.
+</Callout>
+
+## Related articles
+
+<Cards>
+
+<Card href="/docs/uptime-monitoring/port-monitors" title="Port monitors">
+Monitor specific TCP ports
+</Card>
+
+</Cards>

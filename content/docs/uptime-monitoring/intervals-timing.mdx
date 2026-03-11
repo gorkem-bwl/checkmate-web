@@ -1,0 +1,39 @@
+---
+title: "Monitor intervals and timing"
+description: "Configure how often to check your services."
+---
+
+## Overview
+
+The check interval determines how often Checkmate tests your monitors. Choosing the right interval balances quick detection with resource usage.
+
+## Available intervals
+
+Available intervals vary by monitor type:
+
+### Uptime monitors
+
+| Interval | Best for |
+| --- | --- |
+| 15 seconds | Ultra-critical services |
+| 30 seconds | Critical production services |
+| 1-5 minutes | Standard production monitoring |
+| 10-15 minutes | Less critical services |
+| 30 minutes | Development/staging environments |
+
+### PageSpeed monitors
+
+PageSpeed checks use longer intervals (3 minutes to 1 week) since Lighthouse audits are resource-intensive.
+
+## Choosing an interval
+
+Consider these factors when selecting an interval:
+
+- **Service criticality**: Mission-critical services need shorter intervals
+- **Expected downtime impact**: High-traffic sites benefit from faster detection
+- **Resource usage**: Shorter intervals use more system resources
+- **False positive tolerance**: Longer intervals reduce noise from brief glitches
+
+<Callout type="info">
+Start with 3-minute intervals for most monitors. Decrease to 1 minute only for your most critical services.
+</Callout>

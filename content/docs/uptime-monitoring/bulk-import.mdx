@@ -1,0 +1,60 @@
+---
+title: "Bulk import monitors"
+description: "Import multiple monitors from a CSV file."
+---
+
+## Overview
+
+Bulk import allows you to create multiple monitors at once by uploading a CSV file. This is useful when migrating from another monitoring tool or setting up monitoring for many services.
+
+## Accessing bulk import
+
+1. Navigate to **Uptime** in the sidebar
+2. Click the menu icon (three dots) next to **Create monitor**
+3. Select **Bulk import**
+
+## CSV file format
+
+Your CSV file should include the following columns:
+
+| Column | Description | Required |
+| --- | --- | --- |
+| name | Monitor display name | Yes |
+| url | Target URL or hostname | Yes |
+| type | Monitor type (http, ping, port, docker) | Yes |
+| interval | Check interval in seconds | No |
+| port | Port number (for port monitors) | No |
+
+## Template files
+
+Checkmate provides two files to help you get started:
+
+- **Template**: An empty CSV with the correct column headers
+- **Sample**: A pre-filled example with sample monitors
+
+<Callout type="info">
+Download the template file first, fill it with your monitors, then upload it to create all monitors at once.
+</Callout>
+
+## Importing monitors
+
+1. Download the template or create your own CSV file
+2. Fill in the monitor details following the format above
+3. Click **Choose file** to select your CSV
+4. Click **Submit** to create the monitors
+
+After import, you'll be redirected to the Uptime page where you can see all your newly created monitors.
+
+## Related articles
+
+<Cards>
+
+<Card href="/docs/uptime-monitoring/http-monitors" title="HTTP monitors">
+Configure HTTP monitors individually
+</Card>
+
+<Card href="/docs/settings/export-monitors" title="Export monitors">
+Export your monitors for backup
+</Card>
+
+</Cards>

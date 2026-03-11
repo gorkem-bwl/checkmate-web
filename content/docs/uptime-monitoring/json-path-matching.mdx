@@ -1,0 +1,41 @@
+---
+title: "JSON path matching"
+description: "Validate API response content."
+---
+
+## Overview
+
+JSON path matching allows you to validate API response content beyond just status codes. You can verify that specific fields contain expected values.
+
+## Enabling JSON matching
+
+1. Create or edit an HTTP monitor
+2. In advanced settings, enable **Response body validation**
+3. Enter the JSON path expression
+4. Enter the expected value
+5. Save the monitor
+
+## JSON path syntax
+
+JSON path uses dot notation to navigate JSON structures:
+
+```json
+// Example API response
+{
+  "status": "healthy",
+  "data": {
+    "version": "2.1.0",
+    "services": ["api", "database"]
+  }
+}
+```
+
+| JSON path | Returns |
+| --- | --- |
+| status | "healthy" |
+| data.version | "2.1.0" |
+| data.services[0] | "api" |
+
+<Callout type="warn">
+JSON path matching only works with APIs that return valid JSON. Ensure the response Content-Type is application/json.
+</Callout>

@@ -1,0 +1,17 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "getting-started",
+    "uptime-monitoring",
+    "pagespeed",
+    "infrastructure",
+    "incidents",
+    "checks",
+    "logs",
+    "notifications",
+    "status-pages",
+    "maintenance",
+    "team-management",
+    "settings"
+  ]
+}

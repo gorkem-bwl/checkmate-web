@@ -1,0 +1,31 @@
+---
+title: "Check details and timing"
+description: "Response times, status codes, and timing breakdown."
+---
+
+## Overview
+
+Each check includes detailed timing information that helps you understand where time is spent during the request. This is especially useful for diagnosing slow response times.
+
+## Timing breakdown
+
+Hover over the response time in the check table to see the full timing breakdown:
+
+- **DNS lookup**: Time to resolve the domain name to an IP address
+- **TCP connection**: Time to establish the TCP connection
+- **TLS handshake**: Time to complete SSL/TLS negotiation (HTTPS only)
+- **Wait time (TTFB)**: Time waiting for the first byte from the server
+- **Download**: Time to download the response body
+- **Total time**: Sum of all timing components
+
+## HTTP status codes
+
+For HTTP monitors, each check records the status code. A successful check returns a 2xx status code (200-299). Other codes indicate issues:
+
+- **3xx**: Redirect responses (may indicate configuration issues)
+- **4xx**: Client errors (authentication, not found, etc.)
+- **5xx**: Server errors (internal errors, gateway issues)
+
+## Response time charts
+
+Monitor detail pages display response time trends over time. Use these charts to identify performance patterns, detect gradual degradation, or verify improvements after optimization.

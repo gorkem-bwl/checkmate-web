@@ -1,0 +1,40 @@
+---
+title: "System diagnostics"
+description: "CPU, memory, and heap usage metrics."
+---
+
+## Overview
+
+The Diagnostics tab provides real-time system performance metrics. Monitor server health, identify performance bottlenecks, and ensure Checkmate is running optimally.
+
+## Accessing diagnostics
+
+1. Navigate to **Logs** in the sidebar
+2. Click the **Diagnostics** tab
+
+## Status overview
+
+The top section shows key status indicators:
+
+- **Status**: Overall system status (up or error)
+- **Event loop delay**: Node.js event loop latency in milliseconds
+- **Process uptime**: How long the server has been running
+- **Heap memory**: Used and total V8 heap memory
+- **OS memory limit**: System memory available
+
+## Performance gauges
+
+Visual gauges display resource utilization:
+
+- **Heap allocation**: Percentage of heap limit being allocated
+- **Heap usage**: Percentage of allocated heap in use
+- **Heap utilization**: Overall heap usage percentage
+- **CPU usage**: Current CPU utilization
+
+<Callout type="warn" title="High resource usage">
+
+</Callout>
+
+## Refreshing data
+
+Click the Refresh button to update diagnostics with the latest metrics. The data is not auto-refreshed to reduce server load.

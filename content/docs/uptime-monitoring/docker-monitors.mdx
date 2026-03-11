@@ -1,0 +1,50 @@
+---
+title: "Docker monitors"
+description: "Monitor Docker container status and health."
+---
+
+## Overview
+
+Docker monitors check the status and health of Docker containers. They verify that containers are running and responding correctly, helping you detect container failures quickly.
+
+## Creating a Docker monitor
+
+1. Navigate to **Uptime** in the sidebar
+2. Click **Create monitor**
+3. Select **Docker container** as the monitor type
+4. Enter the Docker host URL (e.g., `http://localhost:2375`)
+5. Enter the container name or ID
+6. Set the check interval
+7. Click **Create monitor**
+
+## Docker host setup
+
+To monitor Docker containers, Checkmate needs access to the Docker API. You can expose the Docker API in several ways:
+
+- **TCP socket**: Expose Docker on a TCP port (e.g., 2375 for unencrypted, 2376 for TLS)
+- **Unix socket**: Use the default Unix socket at `/var/run/docker.sock`
+
+<Callout type="warn">
+Exposing the Docker API without TLS is a security risk. In production, always use TLS encryption and proper authentication.
+</Callout>
+
+## Container status
+
+Docker monitors check the container's running state. A container is considered:
+
+- **Up**: Container is running and healthy
+- **Down**: Container is stopped, exited, or unreachable
+
+## Related articles
+
+<Cards>
+
+<Card href="/docs/uptime-monitoring/http-monitors" title="HTTP monitors">
+Monitor container services via HTTP
+</Card>
+
+<Card href="/docs/uptime-monitoring/port-monitors" title="Port monitors">
+Monitor container ports directly
+</Card>
+
+</Cards>

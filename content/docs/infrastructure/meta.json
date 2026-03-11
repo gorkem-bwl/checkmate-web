@@ -1,0 +1,11 @@
+{
+  "title": "Infrastructure monitoring",
+  "pages": [
+    "installing-capture",
+    "cpu-monitoring",
+    "memory-monitoring",
+    "disk-monitoring",
+    "network-monitoring",
+    "hardware-thresholds"
+  ]
+}
