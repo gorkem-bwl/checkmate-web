@@ -1,6 +1,11 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Get in touch with the Checkmate team. Join our Discord, open a GitHub discussion, or email us directly.",
+};
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import {

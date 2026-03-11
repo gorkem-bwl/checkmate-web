@@ -1,6 +1,11 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Terms of service",
+  description:
+    "Terms of service for Checkmate, an open-source infrastructure monitoring platform.",
+};
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 

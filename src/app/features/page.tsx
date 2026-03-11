@@ -1,6 +1,11 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Features",
+  description:
+    "Nine monitor types, four notification channels, status pages, incident management, and more. Everything you need for infrastructure monitoring.",
+};
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import {

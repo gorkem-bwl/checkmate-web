@@ -1,6 +1,11 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Privacy policy",
+  description:
+    "How Checkmate handles your data. Self-hosted means your data stays on your infrastructure.",
+};
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 

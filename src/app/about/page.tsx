@@ -1,6 +1,11 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Checkmate is an open-source monitoring platform built by Bluewave Labs and 130+ contributors. Transparent, community-driven, and self-hosted by default.",
+};
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import {
