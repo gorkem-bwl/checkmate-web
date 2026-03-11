@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { GlobeWrapper } from "@/components/GlobeWrapper";
 
 export const metadata: Metadata = {
   title: "Features",
@@ -36,10 +37,10 @@ import {
 const monitorTypes = [
   {
     icon: Globe,
-    title: "HTTP/Website monitoring",
+    title: "Global uptime monitoring",
     description:
-      "Monitor any website or API endpoint with response times, status codes, and content validation.",
-    features: ["Response time tracking", "Status code validation", "Content/keyword checking", "Custom headers"],
+      "Monitor any website or API endpoint from 6 continents. Powered by GlobalPing for worldwide coverage.",
+    features: ["Checks from 6 continents", "Response time tracking", "Status code validation", "Content/keyword checking"],
   },
   {
     icon: Activity,
@@ -131,11 +132,6 @@ const additionalFeatures = [
     icon: Bell,
     title: "Custom alert rules",
     description: "Set thresholds and conditions to trigger alerts exactly when you need them.",
-  },
-  {
-    icon: Globe,
-    title: "Multi-region checks",
-    description: "Monitor from multiple locations to ensure global availability.",
   },
 ];
 
@@ -278,7 +274,7 @@ export default function FeaturesPage() {
           </div>
         </section>
 
-        {/* Additional Features */}
+        {/* Additional Features + Globe */}
         <section className="py-20" style={{ borderBottom: "1px solid #f3f4f6" }}>
           <div className="mx-auto max-w-6xl px-4">
             <div className="text-center mb-16">
@@ -290,6 +286,26 @@ export default function FeaturesPage() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
+              {/* Globe — spans 2 columns and 2 rows */}
+              <div className="bg-gray-950 lg:col-span-2 lg:row-span-2 relative overflow-hidden flex flex-col">
+                <div className="absolute top-6 left-8 z-10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Globe className="w-5 h-5 text-emerald-400" />
+                    <span className="text-emerald-400 text-sm font-medium">GlobalPing</span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-1">
+                    Monitor from 6 continents
+                  </h3>
+                  <p className="text-gray-400 text-sm max-w-xs">
+                    Verify availability worldwide with checks from North America, South America, Europe, Africa, Asia, and Oceania.
+                  </p>
+                </div>
+                <div className="flex-1 min-h-[400px]">
+                  <GlobeWrapper />
+                </div>
+              </div>
+
+              {/* Feature cards */}
               {additionalFeatures.map((feature) => (
                 <div
                   key={feature.title}
