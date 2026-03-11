@@ -57,7 +57,6 @@ export function Contributors() {
               href={contributor.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              title={contributor.login}
               className="group relative"
             >
               <img
@@ -65,9 +64,12 @@ export function Contributors() {
                 alt={contributor.login}
                 width={40}
                 height={40}
-                className="w-10 h-10 rounded-full grayscale hover:grayscale-0 transition-all duration-200 hover:scale-110"
+                className="w-10 h-10 rounded-full grayscale group-hover:grayscale-0 transition-all duration-200 group-hover:scale-110"
                 loading="lazy"
               />
+              <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+                {contributor.login}
+              </span>
             </Link>
           ))}
         </div>
