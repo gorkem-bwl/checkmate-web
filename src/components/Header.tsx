@@ -69,10 +69,11 @@ export function Header() {
               </svg>
             </Link>
             <Link
-              href="https://app.checkmate.so"
+              href="https://checkmate-demo.bluewavelabs.ca/"
+              target="_blank"
               className="inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 transition-colors"
             >
-              Start free
+              Try live demo
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
@@ -110,10 +111,11 @@ export function Header() {
               ))}
               <div className="pt-4">
                 <Link
-                  href="https://app.checkmate.so"
+                  href="https://checkmate-demo.bluewavelabs.ca/"
+                  target="_blank"
                   className="inline-flex items-center justify-center w-full h-10 px-4 text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 transition-colors"
                 >
-                  Start free
+                  Try live demo
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </div>

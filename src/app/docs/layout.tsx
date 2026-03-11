@@ -5,7 +5,14 @@ import type { ReactNode } from "react";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <RootProvider>
+    <RootProvider
+      search={{
+        options: {
+          type: "static",
+          defaultTag: "all",
+        },
+      }}
+    >
       <DocsLayout
         tree={source.pageTree}
         nav={{

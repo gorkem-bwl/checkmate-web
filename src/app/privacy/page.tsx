@@ -44,7 +44,7 @@ export default function PrivacyPage() {
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Service offerings and data handling</h2>
 
-                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">SaaS platform (app.checkmate.so)</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Hosted platform</h3>
                   <ul className="list-disc list-inside text-gray-600 space-y-2 ml-4">
                     <li>Hosted on secure infrastructure</li>
                     <li>Collects: account/organization info, platform usage data, technical data (IP addresses, browser info), and support communications</li>

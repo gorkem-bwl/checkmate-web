@@ -5,7 +5,7 @@ import { Github, MessageSquare } from "lucide-react";
 const footerLinks = {
   product: [
     { name: "Features", href: "/features" },
-    { name: "Documentation", href: "https://docs.checkmate.so" },
+    { name: "Documentation", href: "/docs" },
     { name: "Changelog", href: "https://github.com/bluewave-labs/checkmate/releases" },
   ],
   company: [

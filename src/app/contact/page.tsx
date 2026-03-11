@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -9,11 +8,6 @@ import {
   MessageSquare,
   Github,
   FileText,
-  Building,
-  Users,
-  HelpCircle,
-  Send,
-  CheckCircle,
 } from "lucide-react";
 
 const contactOptions = [
@@ -35,7 +29,7 @@ const contactOptions = [
     icon: FileText,
     title: "Documentation",
     description: "Find answers in our comprehensive docs and guides.",
-    link: "https://docs.checkmate.so",
+    link: "/docs",
     linkText: "Read docs",
   },
   {
@@ -47,31 +41,7 @@ const contactOptions = [
   },
 ];
 
-const reasons = [
-  { icon: Building, label: "Enterprise inquiry" },
-  { icon: Users, label: "Partnership" },
-  { icon: HelpCircle, label: "General question" },
-  { icon: MessageSquare, label: "Feedback" },
-];
-
 export default function ContactPage() {
-  const [formState, setFormState] = useState({
-    name: "",
-    email: "",
-    reason: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSubmitted(true);
-    setIsSubmitting(false);
-  };
-
   return (
     <div className="flex min-h-screen flex-col bg-[#FAFAFA]">
       <Header />
@@ -147,140 +117,6 @@ export default function ContactPage() {
           </div>
         </section>
 
-        {/* Contact Form */}
-        <section className="py-20" style={{ borderBottom: "1px solid #f3f4f6" }}>
-          <div className="mx-auto max-w-3xl px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-[40px] font-bold tracking-[-0.04em] leading-[1.1] text-gray-900 mb-4">
-                Send us a message
-              </h2>
-              <p className="text-gray-500">
-                For enterprise inquiries, partnerships, or anything else, fill out
-                the form below.
-              </p>
-            </div>
-
-            <div className="border border-gray-200 p-8">
-              {isSubmitted ? (
-                <div className="text-center py-12">
-                  <div className="w-16 h-16 border border-gray-200 flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="w-8 h-8 text-emerald-500" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    Message sent!
-                  </h3>
-                  <p className="text-gray-500">
-                    Thanks for reaching out. We&apos;ll get back to you soon.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label
-                        htmlFor="name"
-                        className="block text-sm font-medium text-gray-900 mb-2"
-                      >
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        required
-                        value={formState.name}
-                        onChange={(e) =>
-                          setFormState({ ...formState, name: e.target.value })
-                        }
-                        className="w-full px-4 py-2 border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                        placeholder="Your name"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-900 mb-2"
-                      >
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        required
-                        value={formState.email}
-                        onChange={(e) =>
-                          setFormState({ ...formState, email: e.target.value })
-                        }
-                        className="w-full px-4 py-2 border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                        placeholder="you@example.com"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-2">
-                      Reason for contact
-                    </label>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      {reasons.map((reason) => (
-                        <button
-                          key={reason.label}
-                          type="button"
-                          onClick={() =>
-                            setFormState({ ...formState, reason: reason.label })
-                          }
-                          className={`flex items-center gap-2 px-4 py-2 border text-sm transition-colors ${
-                            formState.reason === reason.label
-                              ? "border-gray-900 bg-gray-900 text-white"
-                              : "border-gray-200 hover:border-gray-400"
-                          }`}
-                        >
-                          <reason.icon className="w-4 h-4" />
-                          {reason.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-medium text-gray-900 mb-2"
-                    >
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      required
-                      rows={5}
-                      value={formState.message}
-                      onChange={(e) =>
-                        setFormState({ ...formState, message: e.target.value })
-                      }
-                      className="w-full px-4 py-2 border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent resize-none"
-                      placeholder="How can we help?"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 transition-colors disabled:opacity-50"
-                  >
-                    {isSubmitting ? (
-                      "Sending..."
-                    ) : (
-                      <>
-                        Send message
-                        <Send className="ml-2 w-4 h-4" />
-                      </>
-                    )}
-                  </button>
-                </form>
-              )}
-            </div>
-          </div>
-        </section>
-
         {/* Email Section */}
         <section className="relative py-20 overflow-hidden">
           {/* Gradient ellipsis background */}
@@ -315,10 +151,10 @@ export default function ContactPage() {
               <Mail className="w-8 h-8 text-gray-900" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Prefer email?
+              Email us
             </h2>
             <p className="text-gray-500">
-              Reach us directly at{" "}
+              For enterprise inquiries, partnerships, or anything else, reach us at{" "}
               <a
                 href="mailto:hello@checkmate.so"
                 className="text-gray-900 underline underline-offset-4"

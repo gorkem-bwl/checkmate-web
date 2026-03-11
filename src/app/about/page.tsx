@@ -344,14 +344,15 @@ export default function AboutPage() {
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link
-                href="https://app.checkmate.so"
+                href="https://checkmate-demo.bluewavelabs.ca/"
+                target="_blank"
                 className="inline-flex items-center justify-center h-12 px-8 text-sm font-medium text-white bg-gray-900 hover:bg-black transition-colors"
               >
-                Get started free
+                Try live demo
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
               <Link
-                href="https://docs.checkmate.so"
+                href="/docs"
                 className="inline-flex items-center justify-center h-12 px-8 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:border-gray-400 transition-colors"
               >
                 Read the docs
