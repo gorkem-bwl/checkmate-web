@@ -80,10 +80,11 @@ export default function Home() {
 
               <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
                 <Link
-                  href="https://app.checkmate.so"
+                  href="https://checkmate-demo.bluewavelabs.ca/"
+                  target="_blank"
                   className="inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 transition-all duration-200"
                 >
-                  Start free
+                  Try live demo
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
                 <Link
@@ -95,6 +96,14 @@ export default function Home() {
                   View on GitHub
                 </Link>
               </div>
+
+              {/* Demo credentials */}
+              <p className="mt-4 text-xs text-gray-400">
+                Demo credentials:{" "}
+                <span className="text-gray-500 font-medium">demouser@demo.com</span>
+                {" / "}
+                <span className="text-gray-500 font-medium">Demouser1!</span>
+              </p>
 
               {/* Stats row */}
               <div className="mt-12 flex items-center gap-8 text-sm text-gray-500">
@@ -954,14 +963,15 @@ export default function Home() {
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link
-                href="https://app.checkmate.so"
+                href="https://checkmate-demo.bluewavelabs.ca/"
+                target="_blank"
                 className="inline-flex items-center justify-center h-12 px-8 text-sm font-medium text-white bg-gray-900 hover:bg-black transition-colors"
               >
-                Start free
+                Try live demo
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
               <Link
-                href="https://docs.checkmate.so"
+                href="/docs"
                 className="inline-flex items-center justify-center h-12 px-8 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:border-gray-400 transition-colors"
               >
                 Read the docs

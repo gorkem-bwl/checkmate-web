@@ -44,7 +44,7 @@ export function Contributors() {
           <p className="text-xl text-gray-500">
             Built by{" "}
             <span className="text-gray-900 font-semibold">
-              {contributors.length}+ developers
+              130+ developers
             </span>{" "}
             from around the world
           </p>
