@@ -732,7 +732,7 @@ export default function Home() {
                 </div>
                 <div className="order-1 lg:order-2 border border-gray-200 overflow-hidden">
                   <img
-                    src="https://github.com/user-attachments/assets/08c2c6ad-3a2f-44d1-a229-d1746a3f9d16"
+                    src="https://github.com/user-attachments/assets/08c2c6ac-3a2f-44d1-a229-d1746a3f9d16"
                     alt="Checkmate status pages"
                     className="w-full h-auto"
                     loading="lazy"
