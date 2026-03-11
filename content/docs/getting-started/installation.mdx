@@ -1,0 +1,275 @@
+---
+title: "Installing Checkmate"
+description: "Deploy Checkmate using Docker, Kubernetes, or from source."
+---
+
+## Overview
+
+Checkmate offers several installation options depending on your needs:
+
+- **Docker (recommended)** — fastest way to get running
+- **ARM / Raspberry Pi** — dedicated image for ARM devices
+- **Kubernetes / Helm** — for orchestrated deployments
+- **Developer setup** — for contributing or customizing
+
+---
+
+## Option 1: Docker (combined)
+
+The simplest approach serves the React frontend from the API server, with MongoDB in a separate container.
+
+### Local deployment
+
+1. Download the Docker Compose file from the repository's `docker/dist-mono/` directory
+2. Start the services:
+
+```bash
+docker compose up
+```
+
+3. Access Checkmate at `http://localhost:52345`
+
+### Remote server deployment
+
+When hosting on a remote machine, update three environment variables in the compose file. Replace `143.110.231.94` with your server's IP:
+
+```bash
+UPTIME_APP_API_BASE_URL=http://143.110.231.94:52345/api/v1
+UPTIME_APP_CLIENT_HOST=http://143.110.231.94
+CLIENT_HOST=http://143.110.231.94
+```
+
+| Variable | Purpose |
+|----------|---------|
+| `UPTIME_APP_API_BASE_URL` | Directs the frontend to the backend API |
+| `UPTIME_APP_CLIENT_HOST` | Constructs frontend links |
+| `CLIENT_HOST` | Authorizes API requests from specified origins |
+
+<Callout type="info">
+Mount identical MongoDB directories to retain data during upgrades. Always back up your data directory before migrating versions.
+</Callout>
+
+---
+
+## Option 2: Docker (separate frontend/backend)
+
+This option uses Nginx to serve the React frontend independently from the API server.
+
+### Local deployment
+
+1. Download the Docker Compose file from `docker/dist/` directory
+2. Start the services:
+
+```bash
+docker compose up
+```
+
+3. Access Checkmate at `http://localhost`
+
+### Optional: Docker container monitoring
+
+To monitor Docker containers, uncomment this volume mount in the compose file:
+
+```yaml
+volumes:
+  - /var/run/docker.sock:/var/run/docker.sock:ro
+```
+
+### Remote deployment
+
+1. Download the Docker Compose file
+2. Update `UPTIME_APP_API_BASE_URL` to reference your remote server
+3. Run `docker compose up`
+4. Access at `http://<your-server-ip>`
+
+---
+
+## Option 3: ARM / Raspberry Pi
+
+For ARM devices (Raspberry Pi 4/5, Apple Silicon Macs), use the dedicated ARM compose file from `docker/dist-arm/`:
+
+```bash
+docker compose up
+```
+
+The application runs at `http://localhost:52345` with the same environment variable configuration as Option 1.
+
+---
+
+## Option 4: Kubernetes with Helm
+
+### Prerequisites
+
+- A running Kubernetes cluster
+- Helm CLI installed and configured
+- `kubectl` configured to access your cluster
+
+### Deploy
+
+```bash
+git clone https://github.com/bluewave-labs/checkmate.git
+cd checkmate/charts/helm/checkmate
+```
+
+Edit `values.yaml` to configure:
+
+- `client.ingress.host` and `server.ingress.host` with your domain names
+- `server.protocol` (http or https)
+- Secrets under the `secrets` section (`JWT_SECRET`, email credentials, API keys)
+
+Then deploy:
+
+```bash
+helm install checkmate ./charts/helm/checkmate
+```
+
+Verify the deployment:
+
+```bash
+kubectl get pods
+kubectl get svc
+```
+
+### Enabling TLS with cert-manager
+
+If you have [cert-manager](https://cert-manager.io/) installed, enable automatic TLS:
+
+```yaml
+client:
+  protocol: https
+  ingress:
+    enabled: true
+    host: checkmate.example.com
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    tls:
+      enabled: true
+      secretName: checkmate-client-tls
+
+server:
+  protocol: https
+  ingress:
+    enabled: true
+    host: checkmate.example.com
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    tls:
+      enabled: true
+      secretName: checkmate-server-tls
+```
+
+Verify certificates:
+
+```bash
+kubectl get certificates
+kubectl describe certificate checkmate-client-tls
+```
+
+---
+
+## Option 5: Third-party hosting
+
+You can also deploy Checkmate using these hosting providers:
+
+- [Elestio](https://elest.io/open-source/checkmate) — managed open-source hosting
+- [Pikapods](https://www.pikapods.com/) — one-click container hosting
+- [Sive Host](https://sive.host) — hosting provider (South Africa)
+
+---
+
+## Option 6: Developer installation
+
+For contributing or customizing Checkmate with hot-reload support.
+
+### Clone and set up MongoDB
+
+```bash
+git clone https://github.com/bluewave-labs/checkmate
+cd checkmate/server/dev
+./build_images.sh
+docker run -d -p 27017:27017 \
+  -v $(pwd)/mongo/data:/data/db \
+  --name uptime_database_mongo uptime_database_mongo
+```
+
+### Start the server
+
+```bash
+cd checkmate/server
+npm install
+```
+
+Create a `.env` file in the server directory (see environment variables below), then:
+
+```bash
+npm run dev
+```
+
+Server runs on `localhost:52345` by default.
+
+### Start the client
+
+```bash
+cd checkmate/client
+npm install
+```
+
+Create a `.env` file in the client directory (see environment variables below), then:
+
+```bash
+npm run dev
+```
+
+Frontend runs on `localhost:5173` by default.
+
+---
+
+## Environment variables
+
+### Client variables
+
+Create `.env` in the client directory:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `VITE_APP_API_BASE_URL` | Yes | Server base URL, e.g. `http://localhost:52345/api/v1` |
+| `VITE_APP_LOG_LEVEL` | No | Logging level: `none`, `error`, `warn`, `debug` |
+| `VITE_APP_DEMO` | No | Enable demo mode: `true` or `false` |
+
+```bash
+VITE_APP_API_BASE_URL="http://localhost:52345/api/v1"
+VITE_APP_LOG_LEVEL="debug"
+```
+
+### Server variables
+
+Create `.env` in the server directory:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `CLIENT_HOST` | Yes | Frontend host, e.g. `http://localhost:5173` |
+| `JWT_SECRET` | Yes | Secret key for JWT authentication |
+| `DB_CONNECTION_STRING` | Yes | MongoDB URL, e.g. `mongodb://localhost:27017/uptime_db` |
+| `ORIGIN` | Yes | CORS origin for requests |
+| `LOG_LEVEL` | No | `debug`, `info`, `warn`, `error` |
+| `TOKEN_TTL` | No | Token expiration, e.g. `99d` |
+
+```bash
+CLIENT_HOST="http://localhost:5173"
+JWT_SECRET="my_secret"
+DB_CONNECTION_STRING="mongodb://localhost:27017/uptime_db"
+TOKEN_TTL="99d"
+ORIGIN="localhost"
+```
+
+<Callout type="info">
+For PageSpeed monitoring, you'll need a free [Google PageSpeed API key](https://developers.google.com/speed/docs/insights/v5/get-started).
+</Callout>
+
+---
+
+## Using a custom CA
+
+If you need to monitor internal HTTPS endpoints with certificates from private Certificate Authorities (like Smallstep), see the [Custom CA Trust Guide](https://github.com/bluewave-labs/checkmate/blob/main/docs/custom-ca-trust.md) for Docker configuration options.

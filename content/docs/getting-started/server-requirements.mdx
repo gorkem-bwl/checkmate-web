@@ -1,0 +1,54 @@
+---
+title: "Server requirements"
+description: "Hardware, storage, and data retention requirements for running Checkmate."
+---
+
+## Overview
+
+Checkmate is designed to run on modest hardware with a small memory footprint. Thanks to extensive optimizations, it requires minimal memory and CPU resources even when monitoring hundreds of servers.
+
+## Hardware requirements
+
+Checkmate runs comfortably on:
+
+- **Raspberry Pi 4 or 5** — suitable for small deployments
+- **Any Linux VPS** with 1+ GB RAM
+- **macOS or Windows** machines for development
+
+For a production deployment monitoring 300+ servers every minute, the Node.js instance uses minimal memory. MongoDB and Redis on the same server use approximately 400 MB and 15 MB respectively.
+
+## Storage requirements
+
+Disk usage scales with the number of monitors and check frequency. As a reference:
+
+| Monitors | Check interval | Monthly storage |
+|----------|---------------|-----------------|
+| 300 servers | Every 1 second | ~3 GB/month |
+
+This translates to roughly 36 GB annually at that scale. Most deployments with less frequent checks will use significantly less storage.
+
+## Data retention
+
+Checkmate maintains a **default data retention policy of 90 days**. You can adjust this through **Settings > Monitor history** to retain data for longer or shorter periods based on your needs.
+
+## Database compression
+
+Checkmate uses MongoDB, which supports two compression methods:
+
+| Method | Trade-off | Best for |
+|--------|-----------|----------|
+| **Snappy** (default) | Lower CPU usage, moderate compression | Most deployments |
+| **Zlib** | Higher compression ratio, more CPU | Storage-constrained environments |
+
+Snappy is the default and works well for the majority of deployments. Switch to Zlib only if storage is a primary concern and you have CPU headroom.
+
+## Network requirements
+
+- **Outbound HTTP/HTTPS** — for uptime checks to monitored endpoints
+- **Port 52345** (default) — for the Checkmate application
+- **Port 27017** — for MongoDB (internal)
+- **Port 59232** — for Capture agent communication (if using infrastructure monitoring)
+
+<Callout type="info">
+If you're monitoring internal services behind a firewall, ensure Checkmate's server can reach those endpoints on the required ports.
+</Callout>

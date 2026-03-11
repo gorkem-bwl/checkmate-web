@@ -2,8 +2,11 @@
   "title": "Getting started",
   "pages": [
     "what-is-checkmate",
+    "installation",
+    "server-requirements",
     "quick-start",
     "dashboard",
-    "roles-permissions"
+    "roles-permissions",
+    "troubleshooting"
   ]
 }

@@ -1,0 +1,101 @@
+---
+title: "Troubleshooting"
+description: "Common issues and solutions for Checkmate deployments."
+---
+
+## General troubleshooting steps
+
+If you're experiencing issues with Checkmate, work through these checks:
+
+1. **Verify ports** — ensure the port used by Checkmate (default 52345) is not occupied by another service
+2. **Check environment variables** — confirm database connections and API URLs point to the correct addresses
+3. **Test connectivity** — access the server endpoint directly at `http://localhost:52345/api/v1`
+4. **Check Docker containers** — verify all containers are running with `docker ps`
+5. **Inspect logs** — check container logs with `docker logs <container_name>`
+6. **Clear browser cache** — clear cache and cookies, then reload
+
+---
+
+## Common issues
+
+### Registration page not appearing
+
+**Symptom:** After starting Checkmate, you're not redirected to the registration page.
+
+**Cause:** The client cannot reach the server.
+
+**Fix:** Verify the Docker server container is running and that `UPTIME_APP_API_BASE_URL` is correctly set.
+
+---
+
+### Promise errors or monitors stuck in pending
+
+**Symptom:** JavaScript promise errors in the console, or monitors never complete their first check.
+
+**Possible causes:**
+
+- **AdBlocker conflict** — AdBlocker Ultimate (and similar extensions) can interfere with Checkmate. Disable ad blockers or whitelist Checkmate's URL.
+- **Docker socket proxy** — when using Docker container monitoring with local volumes, a Docker socket proxy may be required.
+
+---
+
+### Cannot access Checkmate from another machine
+
+**Symptom:** Checkmate works on `localhost` but not from other devices on the network.
+
+**Fix:** Update the API URL in your `docker-compose.yml` to use your host machine's IP address:
+
+```yaml
+UPTIME_APP_API_BASE_URL: "http://[host-ip]:5000/api/v1"
+```
+
+Replace `[host-ip]` with your server's actual IP address (e.g. `192.168.1.100`).
+
+---
+
+### Docker socket permission errors
+
+**Symptom:** Docker monitoring fails with permission errors related to `/var/run/docker.sock`.
+
+**Fix:**
+
+1. Verify Docker group membership and GID on the host
+2. Configure proper user permissions in the compose file
+3. Ensure the socket is mounted as read-only:
+
+```yaml
+volumes:
+  - /var/run/docker.sock:/var/run/docker.sock:ro
+```
+
+---
+
+### Token expiry issues
+
+**Symptom:** Users are logged out too frequently.
+
+**Fix:** Adjust the `TOKEN_TTL` environment variable in your server `.env` file. The format follows the [ms](https://github.com/vercel/ms) library syntax:
+
+```bash
+TOKEN_TTL="99d"    # 99 days
+TOKEN_TTL="24h"    # 24 hours
+TOKEN_TTL="7d"     # 7 days
+```
+
+---
+
+### PageSpeed monitoring not working
+
+**Symptom:** PageSpeed checks fail or return no data.
+
+**Fix:** PageSpeed monitoring requires a Google PageSpeed API key. Add it in **Settings** or set it as an environment variable. You can get a free key from the [Google PageSpeed API](https://developers.google.com/speed/docs/insights/v5/get-started).
+
+---
+
+## Getting help
+
+If your issue isn't covered here:
+
+- [Discord community](https://discord.gg/NAb6H3UTjK) — fastest way to get help
+- [GitHub Discussions](https://github.com/bluewave-labs/checkmate/discussions) — for longer-form questions
+- [GitHub Issues](https://github.com/bluewave-labs/checkmate/issues) — for bug reports

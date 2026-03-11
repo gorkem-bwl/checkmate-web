@@ -1,29 +1,116 @@
 ---
 title: "Installing Capture agent"
-description: "Setup the monitoring agent on your servers."
+description: "Setup the monitoring agent on your servers for infrastructure metrics."
 ---
 
 ## Overview
 
-Capture is the companion agent for infrastructure monitoring. Install it on your servers to collect CPU, memory, disk, and network metrics.
+[Capture](https://github.com/bluewave-labs/capture) is a lightweight monitoring agent that collects infrastructure metrics from your servers and sends them to Checkmate. It runs as a small RESTful API exposing hardware metrics.
 
-## Requirements
+## Supported platforms
 
-- Linux, macOS, or Windows server
-- Network access to your Checkmate instance
-- Minimal resources (< 50MB RAM, < 1% CPU)
+Capture runs on Linux, Windows, macOS, Raspberry Pi, and any device capable of running Go applications.
 
-## Installation
+## What it monitors
 
-1. Navigate to **Infrastructure** in the sidebar
+- **CPU** — temperature, load, frequency, usage
+- **Memory** — utilization and available memory
+- **Disk** — usage, inode usage, read/write bytes, S.M.A.R.T. data
+- **Network** — activity and packet information
+- **Docker** — container statistics
+
+---
+
+## Installation methods
+
+### Docker (recommended)
+
+```bash
+docker run \
+  -v /etc/os-release:/etc/os-release:ro \
+  -p 59232:59232 \
+  -e API_SECRET=REPLACE_WITH_YOUR_SECRET \
+  -d ghcr.io/bluewave-labs/capture:latest
+```
+
+### Pre-built binaries
+
+1. Download from [GitHub Releases](https://github.com/bluewave-labs/capture/releases)
+2. Place in `/usr/local/bin`
+3. Make executable:
+
+```bash
+chmod +x /usr/local/bin/capture
+```
+
+### Go install
+
+```bash
+go install github.com/bluewave-labs/capture/cmd/capture@latest
+```
+
+### Build from source
+
+```bash
+git clone https://github.com/bluewave-labs/capture
+cd capture
+just build
+# or: go build -o dist/capture ./cmd/capture/
+```
+
+---
+
+## Configuration
+
+Capture uses three environment variables:
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `API_SECRET` | Yes | — | Shared secret for authentication with Checkmate |
+| `PORT` | No | `59232` | Port the agent listens on |
+| `GIN_MODE` | No | `debug` | Set to `release` for production |
+
+### Starting the agent
+
+```bash
+API_SECRET=your_secret GIN_MODE=release ./capture
+```
+
+---
+
+## Connecting to Checkmate
+
+1. Navigate to **Infrastructure** in Checkmate's sidebar
 2. Click **Add server**
-3. Copy the installation command
-4. Run the command on your server
-5. The server appears automatically once connected
+3. Enter the server's address and the API secret you configured
+4. The server appears automatically once connected
+
+<Callout type="warn">
+The API secret configured on the Capture agent must match the secret entered in Checkmate's infrastructure dashboard.
+</Callout>
+
+---
+
+## S.M.A.R.T. monitoring
+
+S.M.A.R.T. disk health monitoring requires:
+
+- Capture installed as a binary (not Docker)
+- The `smartmontools` package installed on the host
+
+```bash
+# Ubuntu/Debian
+sudo apt install smartmontools
+
+# RHEL/CentOS
+sudo yum install smartmontools
+```
 
 <Callout type="info">
-Capture is open source. View the source code at github.com/bluewave-labs/capture
+S.M.A.R.T. monitoring is not supported when running Capture in Docker due to hardware access limitations.
 </Callout>
+
+---
 
 ## Related articles
 
