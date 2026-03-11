@@ -7,6 +7,15 @@ const Globe = dynamic(
   { ssr: false }
 );
 
+const GlobeLight = dynamic(
+  () => import("@/components/GlobeLight").then((mod) => mod.GlobeLight),
+  { ssr: false }
+);
+
 export function GlobeWrapper() {
   return <Globe />;
+}
+
+export function GlobeLightWrapper() {
+  return <GlobeLight />;
 }

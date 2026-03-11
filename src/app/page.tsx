@@ -1,9 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Contributors } from "@/components/Contributors";
+
+const GlobeLight = dynamic(
+  () => import("@/components/GlobeLight").then((mod) => mod.GlobeLight),
+  { ssr: false }
+);
 import {
   ArrowRight,
   Check,
@@ -232,33 +238,40 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
-              {/* Card 1 - Large: Uptime Monitoring */}
-              <div className="md:col-span-2 lg:col-span-2 bg-white p-8 overflow-hidden">
-                <div className="h-full flex flex-col items-start">
+              {/* Card 1 - Large: Global Uptime Monitoring with Globe */}
+              <div className="md:col-span-2 lg:col-span-2 bg-white overflow-hidden relative min-h-[320px]">
+                {/* Background globe */}
+                <div className="absolute inset-0 flex items-center justify-end pointer-events-none">
+                  <div className="w-[500px] h-[500px] -mr-[100px] -mt-[40px]">
+                    <GlobeLight />
+                  </div>
+                </div>
+                {/* Content */}
+                <div className="relative z-10 h-full flex flex-col items-start p-8">
                   <div>
                     <h3 className="text-sm font-bold tracking-[-0.02em] text-gray-900 mb-2 flex items-center gap-2">
-                      <Activity className="w-4 h-4 text-gray-400" />
-                      Uptime monitoring
+                      <Globe className="w-4 h-4 text-emerald-500" />
+                      Global uptime monitoring
                     </h3>
-                    <p className="text-[22px] text-gray-500 leading-snug">
+                    <p className="text-[22px] text-gray-500 leading-snug max-w-md">
                       Monitor{" "}
                       <span className="text-gray-900 font-semibold">
                         HTTP, ping, and TCP endpoints
                       </span>{" "}
-                      with{" "}
+                      from{" "}
                       <span className="text-gray-900 font-semibold">
-                        1-minute check intervals
-                      </span>
-                      . Get instant alerts when things go down.
+                        6 continents
+                      </span>{" "}
+                      with GlobalPing. Know when things go down, anywhere in the world.
                     </p>
                   </div>
                   <div className="mt-8 w-full">
-                    <div className="flex items-center gap-4 text-sm">
-                      {["HTTP/HTTPS", "Ping/ICMP", "TCP ports"].map(
+                    <div className="flex flex-wrap items-center gap-3 text-sm">
+                      {["North America", "Europe", "Asia", "Oceania", "South America", "Africa"].map(
                         (item) => (
                           <span
                             key={item}
-                            className="px-3 py-1 bg-gray-100 text-gray-600"
+                            className="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-100"
                           >
                             {item}
                           </span>
