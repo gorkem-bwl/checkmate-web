@@ -53,9 +53,9 @@ export function GlobeLight() {
       const globeRadius = 22;
       const globeGeometry = new THREE.SphereGeometry(globeRadius, 40, 40);
       const globeMaterial = new THREE.MeshBasicMaterial({
-        color: 0xf3f4f6,
+        color: 0xd1d5db,
         transparent: true,
-        opacity: 0.5,
+        opacity: 0.6,
       });
       const globe = new THREE.Mesh(globeGeometry, globeMaterial);
       scene.add(globe);
@@ -63,9 +63,9 @@ export function GlobeLight() {
       // Wireframe ring
       const ringGeometry = new THREE.RingGeometry(globeRadius * 1.01, globeRadius * 1.02, 64);
       const ringMaterial = new THREE.MeshBasicMaterial({
-        color: 0xe5e7eb,
+        color: 0x9ca3af,
         transparent: true,
-        opacity: 0.3,
+        opacity: 0.5,
         side: THREE.DoubleSide,
       });
       const ring = new THREE.Mesh(ringGeometry, ringMaterial);
@@ -75,7 +75,7 @@ export function GlobeLight() {
       const dotGroup = new THREE.Group();
       scene.add(dotGroup);
 
-      // Light dot shaders — very subtle gray/green
+      // Dot shaders — visible green/teal on white
       const vertexShader = `
         uniform float u_time;
         void main() {
@@ -86,11 +86,11 @@ export function GlobeLight() {
       const fragmentShader = `
         uniform float u_time;
         void main() {
-          float intensity = sin(u_time) * 0.15 + 0.85;
-          vec3 colorA = vec3(0.82, 0.88, 0.85);
-          vec3 colorB = vec3(0.75, 0.82, 0.78);
+          float intensity = sin(u_time) * 0.2 + 0.8;
+          vec3 colorA = vec3(0.25, 0.65, 0.50);
+          vec3 colorB = vec3(0.40, 0.75, 0.60);
           vec3 color = mix(colorB, colorA, intensity);
-          gl_FragColor = vec4(color, 0.5);
+          gl_FragColor = vec4(color, 0.7);
         }
       `;
 
@@ -203,7 +203,7 @@ export function GlobeLight() {
         const material = new THREE.LineBasicMaterial({
           color: 0x10b981,
           transparent: true,
-          opacity: 0.15,
+          opacity: 0.4,
         });
         const line = new THREE.Line(geometry, material);
         arcGroup.add(line);
@@ -215,7 +215,7 @@ export function GlobeLight() {
         const markerMaterial = new THREE.MeshBasicMaterial({
           color: 0x10b981,
           transparent: true,
-          opacity: 0.4,
+          opacity: 0.7,
           side: THREE.DoubleSide,
         });
         const marker = new THREE.Mesh(markerGeometry, markerMaterial);
@@ -281,7 +281,7 @@ export function GlobeLight() {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 w-full h-full opacity-70"
+      className="absolute inset-0 w-full h-full"
     />
   );
 }

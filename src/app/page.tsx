@@ -240,9 +240,9 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
               {/* Card 1 - Large: Global Uptime Monitoring with Globe */}
               <div className="md:col-span-2 lg:col-span-2 bg-white overflow-hidden relative min-h-[320px]">
-                {/* Background globe */}
-                <div className="absolute inset-0 flex items-center justify-end pointer-events-none">
-                  <div className="w-[500px] h-[500px] -mr-[100px] -mt-[40px]">
+                {/* Background globe — 3x size, only upper part visible */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  <div className="absolute -bottom-[600px] right-[-200px] w-[900px] h-[900px]">
                     <GlobeLight />
                   </div>
                 </div>
