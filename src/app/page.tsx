@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Contributors } from "@/components/Contributors";
 import {
   ArrowRight,
   Check,
@@ -574,6 +575,174 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Screenshots — Alternating layout */}
+        <section className="py-24" style={{ borderBottom: "1px solid #f3f4f6" }}>
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="text-center mb-20">
+              <h2 className="text-[40px] sm:text-[48px] font-bold tracking-[-0.04em] leading-[1.1] text-gray-900 mb-6">
+                See it in action
+              </h2>
+              <p className="text-xl text-gray-500 max-w-3xl mx-auto">
+                A clean, powerful interface that gives you{" "}
+                <span className="text-gray-900 font-semibold">
+                  complete visibility
+                </span>{" "}
+                into your infrastructure
+              </p>
+            </div>
+
+            <div className="space-y-24">
+              {/* 1: Screenshot left, text right — Monitor details */}
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="border border-gray-200 overflow-hidden">
+                  <img
+                    src="https://github.com/user-attachments/assets/2eff6464-0738-4a32-9312-26e1e8e86275"
+                    alt="Checkmate uptime monitoring dashboard"
+                    className="w-full h-auto"
+                    loading="lazy"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    Know the moment something goes wrong
+                  </h3>
+                  <p className="text-gray-500 leading-relaxed mb-6">
+                    Track uptime percentage, incident count, and response times
+                    for every endpoint. Historical charts show patterns so you
+                    can catch issues before they become outages.
+                  </p>
+                  <ul className="space-y-3">
+                    {[
+                      "Real-time uptime percentage and incident tracking",
+                      "Response time charts with day, week, and month views",
+                      "SSL certificate expiry monitoring",
+                    ].map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-2 text-sm text-gray-700"
+                      >
+                        <Check className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* 2: Text left, screenshot right — PageSpeed */}
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="order-2 lg:order-1">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    Understand your site performance
+                  </h3>
+                  <p className="text-gray-500 leading-relaxed mb-6">
+                    Powered by Google Lighthouse, get detailed performance
+                    scores, accessibility ratings, and Core Web Vitals tracking
+                    over time.
+                  </p>
+                  <ul className="space-y-3">
+                    {[
+                      "Lighthouse performance, accessibility, and SEO scores",
+                      "Core Web Vitals: LCP, FCP, CLS, and more",
+                      "Score history to track improvements over time",
+                    ].map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-2 text-sm text-gray-700"
+                      >
+                        <Check className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="order-1 lg:order-2 border border-gray-200 overflow-hidden">
+                  <img
+                    src="https://github.com/user-attachments/assets/616c3563-c2a7-4ee4-af6c-7e6068955d1a"
+                    alt="Checkmate PageSpeed monitoring"
+                    className="w-full h-auto"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+
+              {/* 3: Screenshot left, text right — Infrastructure */}
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="border border-gray-200 overflow-hidden">
+                  <img
+                    src="https://github.com/user-attachments/assets/7912d7cf-0d0e-4f26-aa5c-2ad7170b5c99"
+                    alt="Checkmate infrastructure monitoring"
+                    className="w-full h-auto"
+                    loading="lazy"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    Deep visibility into server health
+                  </h3>
+                  <p className="text-gray-500 leading-relaxed mb-6">
+                    Monitor CPU, memory, disk, and network usage across all your
+                    servers with the lightweight Capture agent. See real-time
+                    gauges and historical trends.
+                  </p>
+                  <ul className="space-y-3">
+                    {[
+                      "CPU usage, temperature, and core frequency",
+                      "Memory and disk usage with visual gauges",
+                      "Historical charts for capacity planning",
+                    ].map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-2 text-sm text-gray-700"
+                      >
+                        <Check className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* 4: Text left, screenshot right — Status pages */}
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="order-2 lg:order-1">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    Keep your users informed
+                  </h3>
+                  <p className="text-gray-500 leading-relaxed mb-6">
+                    Create beautiful public status pages that show real-time
+                    service health. Build trust with your users by being
+                    transparent about uptime.
+                  </p>
+                  <ul className="space-y-3">
+                    {[
+                      "Public-facing status dashboard with custom branding",
+                      "Per-service uptime bars with historical data",
+                      "Shareable link for customers and stakeholders",
+                    ].map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-2 text-sm text-gray-700"
+                      >
+                        <Check className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="order-1 lg:order-2 border border-gray-200 overflow-hidden">
+                  <img
+                    src="https://github.com/user-attachments/assets/08c2c6ad-3a2f-44d1-a229-d1746a3f9d16"
+                    alt="Checkmate status pages"
+                    className="w-full h-auto"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Deployment Options */}
         <section className="py-24" style={{ borderBottom: "1px solid #f3f4f6" }}>
           <div className="mx-auto max-w-6xl px-4">
@@ -702,6 +871,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Contributors */}
+        <Contributors />
 
         {/* Discord Community Banner */}
         <section className="py-16" style={{ borderBottom: "1px solid #f3f4f6" }}>
