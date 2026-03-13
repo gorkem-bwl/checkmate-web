@@ -81,7 +81,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#FAFAFA]`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <JsonLd />
         {children}
