@@ -40,7 +40,7 @@
     "@types/three": "^0.183.1",
     "baseline-browser-mapping": "^2.10.7",
     "eslint": "^9",
-    "eslint-config-next": "16.0.8",
+    "eslint-config-next": "^16.1.6",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
