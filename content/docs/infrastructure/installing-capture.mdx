@@ -33,6 +33,37 @@ docker run \
   -d ghcr.io/bluewave-labs/capture:latest
 ```
 
+### Helm (Kubernetes)
+
+You can deploy Capture on a Kubernetes cluster using the provided Helm chart.
+
+1. Clone the Capture repository to get the Helm chart:
+
+    ```shell
+    git clone https://github.com/bluewave-labs/capture.git
+    ```
+
+2. Go to the Helm chart directory:
+
+    ```shell
+    cd capture/deployment/helm/capture
+    ```
+
+3. Customize `values.yaml` and set the required `secret.apiSecret`
+
+4. Install the chart:
+
+    ```shell
+    helm install capture .
+    ```
+
+5. Verify deployment
+
+    ```shell
+    kubectl get pods
+    kubectl get svc
+    ```
+
 ### Pre-built binaries
 
 1. Download from [GitHub Releases](https://github.com/bluewave-labs/capture/releases)
